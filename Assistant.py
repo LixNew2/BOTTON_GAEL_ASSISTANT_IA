@@ -17,10 +17,10 @@ class Assistant:
         self.current_session = ""
         self.exceptFiles = ['__pycache__', 'sessions', '.vscode', '.git', '.gitattributes']
 
-        self.create_session_folder()
+        self.create_sessions_folder()
         self.load_history()
         
-    def create_session_folder(self):
+    def create_sessions_folder(self):
         if (not os.path.exists(f"./sessions")):
             os.mkdir('./sessions')
 
