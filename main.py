@@ -9,7 +9,8 @@ if __name__ == '__main__':
         user_input = input('>> ')
         user_input_split = user_input.split(' ')
         if(user_input_split[0] == '/load'):
-            path =user_input_split[1]
+            path = user_input_split[1] if len(user_input_split) > 1 else '.'
+            
             if(os.path.exists(path)):
                 assistant.load_context(path)
         elif(user_input_split[0] == '/loadchat'):

@@ -4,7 +4,7 @@ import re, json, os, uuid
 class Assistant:
     def __init__(self, model : str) -> None:
         self.model = model
-        self.paterns = [ r'```([^`]*)```'  , r'```python\n(.*?)```']
+        self.paterns = [r'```([^`]*)```'  , r'```python\n(.*?)```']
         self.context = []
         self.history = []
         self.system_content = """
@@ -15,10 +15,15 @@ class Assistant:
                 """
         self.replacer = ['`', 'python']
         self.current_session = ""
+        self.exceptFiles = ['__pycache__', 'sessions', '.vscode', '.git', '.gitattributes']
 
+        self.create_session_folder()
         self.load_history()
         
-    
+    def create_session_folder(self):
+        if (not os.path.exists(f"./sessions")):
+            os.mkdir('./sessions')
+
     def load_history(self, chat = None) -> None:
         if(chat):
             if(os.path.exists(f"./sessions/{chat}.json")):
@@ -106,9 +111,9 @@ class Assistant:
 
     def load_context(self, project_path = '.') -> None:
         files = os.listdir(project_path)
-        files.remove('__pycache__')
-        files.remove('sessions')
-        files.remove('.vscode')
+
+        for file in files.copy():
+            if(file in self.exceptFiles) : files.remove(file)
 
         for file in files:
             with open(file, 'r') as f:
